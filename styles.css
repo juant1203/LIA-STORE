@@ -134,6 +134,11 @@ body {
     opacity: 1;
 }
 
+.product {
+    position: relative;
+    cursor: pointer;
+}
+
 
 /* Contenedor del filtro al estilo de Mercado Libre */
 .filter-container {
@@ -185,18 +190,43 @@ body {
     background: gray;
 }
 
+
 /* Contenedor del carrito en la esquina superior derecha */
 .cart-container {
-    position: absolute;
+    position: fixed; /* Cambiado a fixed para mantenerlo en la esquina al hacer scroll */
     top: 10px;
     right: 10px;
-    background: white;
+    background: #532d69;
     padding: 8px 12px;
     border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: none;
+    display: flex; /* Ahora se muestra */
     align-items: center;
     cursor: pointer;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+/* Estilos para el carrito desplegable */
+.cart-content {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 320px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: none; /* Se oculta hasta que se active */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    flex-direction: column;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.cart-content.visible {
+    display: block;
+    opacity: 1;
 }
 
 .cart-icon {
@@ -208,21 +238,21 @@ body {
 .cart-text {
     font-size: 14px;
     font-weight: bold;
-    color: #333;
+    color: white;
 }
 
 /* Estilos para el carrito desplegable */
 .cart-content {
     position: absolute;
-    top: 60px;
-    right: 10px;
-    width: 250px;
+    top: -60px;
+    right: 50px;
+    width: 240px;
     background: white;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 15px;
-    display: flex;
+    display: none;
 }
 
 .cart-content h2 {
@@ -235,11 +265,22 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    max-height: 300;
 }
 
 .cart-content li {
-    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+.cart-content img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
 }
 
 .cart-content li:last-child {
@@ -319,6 +360,7 @@ p {
 .support-option:hover {
     background: #ddd;
 }
+
 .filter-menu {
     position: absolute;
     top: 150px;
@@ -396,53 +438,6 @@ p {
     background: #ddd;
 }
 
-.cart-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #532d69;
-    padding: 8px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex; /* Ahora se muestra */
-    align-items: center;
-    cursor: pointer;
-}
-
-.cart-icon {
-    width: 40px;
-    height: auto;
-    margin-right: 8px;
-}
-
-.cart-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-}
-
-/* Estilos para el carrito desplegable */
-.cart-content {
-    position: absolute;
-    top: 60px;
-    right: 10px;
-    width: 320px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    display: none; /* Se oculta hasta que se active */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-.cart-content.visible {
-    display: block;
-    opacity: 1;
-}
 
 .cart-content ul {
     list-style: none;
@@ -470,9 +465,9 @@ p {
 
 
 /* Mostrar el carrito cuando el mouse pase sobre el icono */
-.cart-container:hover .cart-content {
+.cart-content.visible .empty-cart-button {
     display: block;
-    opacity: 3;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .empty-cart {
@@ -482,7 +477,8 @@ p {
     margin-top: 20px;
 }
 
-.empty-cart-button {
+.cart-content .empty-cart-button {
+    display: none;
     width: 100%;
     background: red;
     color: white;
@@ -498,6 +494,10 @@ p {
 
 .empty-cart-button:hover {
     background: darkred;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 /* 🔹 Estilo del fondo oscuro detrás de la ventana emergente */
 .product-modal {
@@ -516,59 +516,138 @@ p {
     z-index: 1000;
 }
 
-/* 🔹 Contenedor de la ventana emergente */
-.modal-content {
-    background: white;
-    padding: 20px;
-    width: 300px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+/* Estilos para el modal */
+.modal {
+    display: none;  /* Ocultamos el modal por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);  /* Fondo translúcido */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;  /* Asegura que el modal se muestre por encima de otros elementos */
 }
 
-/* 🔹 Imagen del producto dentro del modal */
-.modal-content img {
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    text-align: center;
+}
+
+#modal-image {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-/* 🔹 Botón para cerrar el modal */
-.close-modal {
+#modal-title {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+#modal-price {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+#add-to-cart-button {
+    background-color: #532d69;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#add-to-cart-button:hover {
+    background-color: #532d69;
+}
+
+.close-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+    font-size: 30px;
     cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+    color: #333;
 }
 
-.close-modal:hover {
-    background: darkred;
+.close-btn:hover {
+    color: #532d69;
+
 }
 
-/* 🔹 Botón de agregar al carrito */
-.add-to-cart {
-    background: #532d69;
+/* Estilos para los productos */
+.product {
+    position: relative;
+    cursor: pointer;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     color: white;
-    padding: 10px;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+}
+
+
+.product {
+    position: relative;
+    cursor: pointer;
+}
+
+.add-to-cart-btn {
+    display: none;  /* Ocultamos el botón al principio */
+    position: absolute;
+    bottom: 10px;   /* Lo ponemos cerca de la base de la imagen */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #532d69;  /* Un color llamativo */
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.add-to-cart:hover {
-    background: #3a1f4f;
+.product:hover .add-to-cart-btn {
+    display: block;  /* Mostramos el botón al pasar el ratón por encima */
+    opacity: 1;  /* Aumentamos la opacidad */
+    transform: translateX(-50%) scale(1.1);  /* Le damos un pequeño zoom */
 }
+
+.add-to-cart-btn:active {
+    transform: translateX(-50%) scale(1);  /* Al presionar, eliminamos el zoom */
+}
+
+.add-to-cart-btn {
+    /*... otros estilos ...*/
+    animation: bounce 0.6s ease-out;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+
 
 /* 🔹 Mostrar la ventana emergente cuando se active */
 .product-modal.active {
@@ -576,5 +655,17 @@ p {
     visibility: visible;
 }
 
-
-
+@media (max-width: 768px) {
+    .products-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .search-bar input {
+        width: 80%;
+    }
+}
+#cart-counter {
+    color: #ffffff; /* Cambia este valor al color que desees */
+    font-weight: bold;
+    margin-left: 5px;
+}

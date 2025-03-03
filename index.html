@@ -2,123 +2,100 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="LIA STORE - Encuentra cualquier tipo de artículos en nuestra tienda en línea.">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="description" content="LIA STORE - Encuentra cualquier tipo de artículos en nuestra tienda en línea">
     <meta name="keywords" content="tienda en línea, moda, belleza, hogar, tecnología">
     <meta name="author" content="LIA STORE">
     
     <title>LIA STORE</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="512x512" href="img/pestaña.png">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">    
+    <link rel="icon" type="img/pestaña.png" sizes="512x512" href="img/pestaña.png">    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <!-- Logo con menú desplegable de filtros -->
-        <div class="logo-container" onclick="toggleFilterMenu()" role="button" aria-label="Abrir menú de filtros">
-            <span class="click-text">Oprime aquí</span>
-            <img src="img/pestaña.png" alt="Logo de LIA STORE" class="logo">
+    <header>        
+        <!-- Logo con menú desplegable de filtros -->        
+         <div class="logo-container" onclick="toggleFilterMenu()" role="button" aria-label="Abrir menú de filtros">           
+            <span class="click-text">Oprime aquí</span>           
+            <img src="img/pestaña.png" alt="Logo de LIA STORE" class="logo">        
         </div>
         
-        <!-- Barra de búsqueda -->
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">
+        <!-- Barra de búsqueda -->        
+         <div class="search-bar">            
+            <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">           
             <button onclick="searchProducts()">🔍</button>
-        </div>
-        <div class="cart-container" onclick="toggleCart()">
-            <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png" class="cart-icon" alt="Carrito">
-            <span class="cart-text">Carrito</span>
-        
-            <!-- Contenido del carrito -->
-            <div id="cartContent" class="cart-content">
-                <h2>Tú Carrito</h2>
-                <ul id="cartList">
-                </ul>
-                <div id="cart-items"></div>
-                <button class="empty-cart-button" onclick="emptyCart()">Vaciar Carrito</button>
-                <button id="clear-cart">Vaciar Carrito</button>     
+
+            <div id="cart-button" class="cart-container" onclick="toggleCart()">
+                <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Carrito de Compras" class="cart-icon">
+                <span class="cart-text">Carrito de Compras</span>
+                <p id="cart-counter">0</p>
             </div>
-        </div>
-        
+            <div id="cart-content" class="cart-content">
+                <h2>Carrito de Compras</h2>
+                <ul id="cart-items-list">
+                    <li>Tu carrito está vacío</li>
+                </ul>
+                <button id="empty-cart-button" class="empty-cart-button" onclick="emptyCart()">
+                    Vaciar Carrito
+                </button>
+            </div>
+          
     </header>
 
-    <!-- Menú de filtros (inicialmente oculto) -->
-    <nav id="filter-menu" class="filter-menu">
-        <button class="filter-option" onclick="filterProducts('all')">📌 Todos</button>
-        <button class="filter-option" onclick="filterProducts('moda')">👗 Moda</button>
-        <button class="filter-option" onclick="filterProducts('belleza')">💄 Belleza</button>
-        <button class="filter-option" onclick="filterProducts('hogar')">🏠 Hogar</button>
-        <button class="filter-option" onclick="filterProducts('tecnologia')">📱 Tecnología</button>
+    <!-- Menú de filtros (inicialmente oculto) -->    
+     <nav id="filter-menu" class="filter-menu">        
+        <button class="filter-option" onclick="filterProducts('all')">📌 Todos</button>       
+        <button class="filter-option" onclick="filterProducts('moda')">👗 Moda</button>        
+        <button class="filter-option" onclick="filterProducts('belleza')">💄 Belleza</button>        
+        <button class="filter-option" onclick="filterProducts('hogar')">🏠 Hogar</button>       
+        <button class="filter-option" onclick="filterProducts('tecnologia')">📱 Tecnología</button>    
     </nav>
-
-    <!-- Contenedor del carrito -->
-    <section id="cart-content" class="cart-content" aria-live="polite">
-        <h2>Carrito de Compras</h2>
-        <ul id="cart-items">
-            <li>Tu carrito está vacío</li>
-        </ul>
-    </section>
-
-    <main>
-        <h1>Bienvenido a LIA STORE</h1>
+    <main>        
+        <h1>Bienvenido a LIA STORE</h1>        
         <p>LIA STORE es una tienda en la cual vas a conseguir cualquier tipo de artículos.</p>
 
-        <!-- Productos -->
-        <section class="products-container">
-            <article class="product moda">
-                <img src="img/img3.png" alt="Ropa de Moda">
-                <div class="overlay">Moda</div>
-            </article>
+        <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <img id="modal-image" src="" alt="Producto">
+            <h2 id="modal-title">Nombre del producto</h2>
+            <p id="modal-price">Precio: $XX.XX</p>
+            <button id="add-to-cart-button" onclick="addToCart()">Agregar al carrito</button>
+        </div>
 
-            <article class="product belleza">
-                <img src="img/img2.png" alt="Productos de Belleza">
-                <div class="overlay">Belleza</div>
-            </article>
-
-            <article class="product hogar">
-                <img src="img/img4.jpg" alt="Artículos para el hogar">
-                <div class="overlay">Hogar</div>
-            </article>
-
-            <article class="product tecnologia">
-                <img src="img/img5.png" alt="Dispositivos de Tecnología">
-                <div class="overlay">Tecnología</div>
-            </article>
-        </section>
+        </div>        
+         <section class="products-container">
+        <article class="product moda" onclick="showProductDetails('img/img3.png', 'Moda', '$39.99')">
+            <img src="img/img3.png" alt="Ropa de Moda">
+            <div class="overlay">Moda</div>
+        </article>
+        <article class="product belleza" onclick="showProductDetails('img/img2.png', 'Belleza', '$19.99')">
+            <img src="img/img2.png" alt="Productos de Belleza">
+            <div class="overlay">Belleza</div>
+        </article>
+        <article class="product hogar" onclick="showProductDetails('img/img4.png', 'Hogar', '$19.99')">
+            <img src="img/img4.jpg" alt="Productos de Belleza">
+            <div class="overlay">Hogar</div>
+        </article>
+        <article class="product tecnologia" onclick="showProductDetails('img/img5.png', 'Tecnología', '$19.99')">
+            <img src="img/img5.png" alt="Productos de Belleza">
+            <div class="overlay">Belleza</div>
+        </article>
+    
     </main>
+   
+        <!-- Botón flotante de atención al cliente -->
+        <div class="support-button" onclick="toggleSupport()">
+            🛎️ Atención
+        </div>
 
-    <!-- Botón flotante de atención al cliente -->
-    <div class="support-button" onclick="toggleSupport()" role="button" aria-label="Abrir menú de atención al cliente">
-        🛎️ Atención
-    </div>
-
-    <!-- Menú de contacto -->
-    <nav class="support-menu" id="support-menu">
+        <!-- Menú de contacto -->
+    <div class="support-menu" id="support-menu">
         <a href="tel:3165718447" class="support-option">📞 Llamadas</a>
         <a href="https://wa.me/3181145277?text=¡Hola!%20Necesito%20ayuda%20con%20mi%20compra." target="_blank" class="support-option">💬 WhatsApp</a>
-    </nav>
-
-    <script src="script.js"></script>
-    
-    <script>
-        function toggleSupport() {
-            document.getElementById("support-menu").classList.toggle("active");
-        }
-    </script>
-
-<div class="product-modal" id="productModal">
-    <div class="modal-content">
-        <button class="close-modal" onclick="closeProductModal()">X</button>
-        <img id="modalImage" src="" alt="Producto">
-        <h2 id="modalTitle"></h2>
-        <p id="modalDescription"></p>
-        <p><strong>Precio: </strong> <span id="modalPrice"></span></p>
-        <button class="add-to-cart" onclick="addToCartFromModal()">Agregar al carrito</button>
     </div>
-</div>
-
-
-</body>
+    <script src="script.js"></script>
+    </body>
 </html>
