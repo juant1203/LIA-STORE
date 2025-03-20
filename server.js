@@ -31,7 +31,7 @@ const db = new Client({
 
 db.connect()
   .then(() => console.log("✅ Conectado a PostgreSQL"))
-  .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
+  .catch(err => console.error("Error conectando a PostgreSQL:", err));
 
 const dbMySQL = mysql.createPool({
   host: process.env.MYSQL_HOST,
