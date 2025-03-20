@@ -2,47 +2,47 @@ require("dotenv").config();
 
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000; 
-
+const PORT = process.env.PORT || 3000;
 const path = require("path");
+const cors = require("cors");
+app.use(cors({
+  origin: 'https://lia-store.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
+const { Client } = require("pg"); 
 
 app.use(express.static(path.join(__dirname)));
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-const mysql = require("mysql2");
-const db = mysql.createConnection({
+
+const db = new Client({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 5432, 
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error("Error conectando a MySQL:", err);
-    return;
+db.connect()
+  .then(() => console.log("✅ Conectado a PostgreSQL"))
+  .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
+
+app.get("/productos", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM productos");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("❌ Error en la consulta:", err);
+    res.status(500).json({ error: "Error en la base de datos" });
   }
-  console.log("Conectado a la base de datos MySQL");
-});
-
-app.get("/productos", (req, res) => {
-  const sql = "SELECT * FROM productos";
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error("Error en la consulta:", err);
-      res.status(500).json({ error: "Error en la base de datos" });
-      return;
-    }
-    res.json(results);
-  });
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
 
-const cors = require("cors");
-app.use(cors());
