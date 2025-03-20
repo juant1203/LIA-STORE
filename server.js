@@ -53,7 +53,7 @@ dbMySQL.getConnection()
 
 app.get("/api/productos/postgres", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM productos"); // <-- Corrección aquí
+    const result = await db.query("SELECT * FROM productos");
     res.json(result.rows);
   } catch (err) {
     console.error("❌ Error en la consulta de PostgreSQL:", err);
