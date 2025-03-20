@@ -321,21 +321,6 @@ function emptyCart() {
 }
 
 
-fetch("https://lia-store.onrender.com/productos")
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); 
-    mostrarProductos(data); 
-  })
-  .catch(error => console.error("Error al obtener productos:", error));
-
-
-function mostrarProductos(productos) {
-  const contenedor = document.getElementById("productos"); 
-  if (!contenedor) {
-    console.error("❌ No se encontró el contenedor de productos.");
-    return;
-  }
   contenedor.innerHTML = ""; 
 
   productos.forEach(producto => {
@@ -349,7 +334,7 @@ function mostrarProductos(productos) {
     `;
     contenedor.appendChild(item);
   });
-}
+
 
 function agregarAlCarrito(nombre, precio, imagen) {
     let product = {
