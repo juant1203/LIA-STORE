@@ -43,3 +43,6 @@ app.get("/productos", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
+const cors = require("cors");
+app.use(cors());
