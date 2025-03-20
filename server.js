@@ -49,9 +49,9 @@ db.connect()
     console.log("✅ Conectado a MySQL");
     conn.release();
   })
-  .catch(err => console.error("❌ Error conectando a MySQL:", err));
+  .catch(err => console.error(" Error conectando a MySQL:", err));
 
-  
+
   app.get("/api/productos/postgres", async (req, res) => {
     try {
       const result = await dbPostgres.query("SELECT * FROM productos");
