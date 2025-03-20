@@ -319,31 +319,3 @@ function emptyCart() {
     updateCartView();
     updateCartCounter();
 }
-
-  productos.forEach(producto => {
-    const item = document.createElement("div");
-    item.classList.add("product"); 
-    item.innerHTML = `
-      <img src="${producto.imagen}" alt="${producto.nombre}" width="100">
-      <h3>${producto.nombre}</h3>
-      <p>Precio: $${producto.precio}</p>
-      <button onclick="agregarAlCarrito('${producto.nombre}', '${producto.precio}', '${producto.imagen}')">🛒 Agregar al carrito</button>
-    `;
-    contenedor.appendChild(item);
-  });
-
-
-function agregarAlCarrito(nombre, precio, imagen) {
-    let product = {
-        image: imagen,
-        title: nombre,
-        price: precio
-    };
-
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    updateCartView();
-    updateCartCounter();
-    alert('Producto agregado al carrito!');
-}
