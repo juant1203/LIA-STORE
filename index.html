@@ -14,19 +14,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <header>        
-        <!-- Logo con menú desplegable de filtros -->        
+    <header>            
          <div class="logo-container" onclick="toggleFilterMenu()" role="button" aria-label="Abrir menú de filtros">           
             <span class="click-text">Oprime aquí</span>           
             <img src="img/pestaña.png" alt="Logo de LIA STORE" class="logo">        
-        </div>
-        
-        <!-- Barra de búsqueda -->        
+        </div> 
          <div class="search-bar">            
             <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">           
             <button onclick="searchProducts()">🔍</button>
-
             <div id="cart-button" class="cart-container" onclick="toggleCart()">
                 <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Carrito de Compras" class="cart-icon">
                 <span class="cart-text">Carrito de Compras</span>
@@ -41,10 +36,7 @@
                     Vaciar Carrito
                 </button>
             </div>
-          
     </header>
-
-    <!-- Menú de filtros (inicialmente oculto) -->    
      <nav id="filter-menu" class="filter-menu">        
         <button class="filter-option" onclick="filterProducts('all')">📌 Todos</button>       
         <button class="filter-option" onclick="filterProducts('moda')">👗 Moda</button>        
@@ -55,7 +47,6 @@
     <main>        
         <h1>Bienvenido a LIA STORE</h1>        
         <p>LIA STORE es una tienda en la cual vas a conseguir cualquier tipo de artículos.</p>
-
         <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">×</span>
@@ -64,7 +55,6 @@
             <p id="modal-price">Precio: $XX.XX</p>
             <button id="add-to-cart-button" onclick="addToCart()">Agregar al carrito</button>
         </div>
-
         </div>        
          <section class="products-container">
         <article class="product moda" onclick="showProductDetails('img/img3.png', 'Moda', '$39.99')">
@@ -81,17 +71,12 @@
         </article>
         <article class="product tecnologia" onclick="showProductDetails('img/img5.png', 'Tecnología', '$19.99')">
             <img src="img/img5.png" alt="Productos de Tecnología">
-            <div class="overlay">Belleza</div>
+            <div class="overlay">Tecnología</div>
         </article>
-    
     </main>
-   
-        <!-- Botón flotante de atención al cliente -->
         <div class="support-button" onclick="toggleSupport()">
             🛎️ Atención
         </div>
-
-        <!-- Menú de contacto -->
     <div class="support-menu" id="support-menu">
         <a href="tel:3165718447" class="support-option">📞 Llamadas</a>
         <a href="https://wa.me/3181145277?text=¡Hola!%20Necesito%20ayuda%20con%20mi%20compra." target="_blank" class="support-option">💬 WhatsApp</a>

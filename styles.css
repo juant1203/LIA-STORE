@@ -1,6 +1,6 @@
-/* Estilo para el fondo de la página con color blanco */
+
 body {
-    background: white; /* Fondo blanco */
+    background: white;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -8,44 +8,43 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Alineación más arriba */
+    justify-content: flex-start; 
     text-align: center;
 }
 
-/* Estilo para el logo en la esquina superior izquierda */
+
 .logo-container {
     position: absolute;
     top: 10px;
     left: 10px;
     cursor: pointer;
-    z-index: 10; /* Asegura que el logo esté por encima */
+    z-index: 10; 
 }
 
-/* Texto llamativo al lado del logo */
 .click-text {
     position: absolute;
     top: 50%;
-    left: calc(100% + 10px); /* Lo coloca al lado derecho del logo con un pequeño margen */
+    left: calc(100% + 10px); 
     transform: translateY(-50%);
     font-size: 14px;
-    background: black; /* Fondo negro */
+    background: black; 
     color: white;
     padding: 5px 12px;
     border-radius: 5px;
     font-weight: bold;
-    white-space: nowrap; /* Evita que el texto se corte */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sutil brillo */
+    white-space: nowrap; 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); 
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* Efecto al pasar el cursor sobre el logo */
+
 .logo-container:hover .click-text {
     transform: scale(1.1);
     opacity: 1;
 }
 
 .logo {
-    width: 130px; /* Ajustado ligeramente el tamaño del logo */
+    width: 130px; 
     height: auto;
 }
 
@@ -60,28 +59,27 @@ body {
 }
 
 
-/* Estilos de los productos */
 
-/* Asegurar que el filtro y los productos estén bien alineados */
+
+
 .filter-container label {
     font-size: 16px;
     font-weight: bold;
-    color: rgb(255, 255, 255); /* Cambia esto al color que prefieras */
-}
+    color: rgb(255, 255, 255); 
 
-/* Contenedor de productos bien alineado */
+}
 .products-container {
     display: flex;
-    flex-direction: row; /* Asegura que estén en fila */
-    flex-wrap: wrap; /* Permite que los productos pasen a la siguiente línea si no caben */
-    justify-content: center; /* Centra los productos horizontalmente */
-    gap: 20px; /* Espaciado entre productos */
-    overflow-x: auto; /* Permite desplazamiento horizontal si hay demasiados productos */
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 20px; 
+    overflow-x: auto; 
     padding: 10px;
     width: 100%;
 }
 
-/* Estilos de los productos */
+
 .product {
     flex: 0 0 auto;
     position: relative;
@@ -106,12 +104,12 @@ body {
     border-radius: 10px;
 }
 
-/* Efecto al pasar el cursor sobre el producto */
+
 .product:hover {
     transform: scale(1.05);
 }
 
-/* Nombre del producto oculto inicialmente */
+
 .product .overlay {
     position: absolute;
     bottom: 0;
@@ -129,7 +127,7 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-/* Mostrar el nombre al pasar el cursor */
+
 .product:hover .overlay {
     opacity: 1;
 }
@@ -140,7 +138,7 @@ body {
 }
 
 
-/* Contenedor del filtro al estilo de Mercado Libre */
+
 .filter-container {
     width: 100%;
     background: #532d69;
@@ -166,7 +164,7 @@ body {
     box-shadow: 0px 2px 5px rgb(255, 255, 255);
 }
 
-/* Estilos para los filtros */
+
 .filters {
     display: flex;
     justify-content: center;
@@ -191,22 +189,22 @@ body {
 }
 
 
-/* Contenedor del carrito en la esquina superior derecha */
+
 .cart-container {
-    position: fixed; /* Cambiado a fixed para mantenerlo en la esquina al hacer scroll */
+    position: fixed; 
     top: 10px;
     right: 10px;
     background: #532d69;
     padding: 8px 12px;
     border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex; /* Ahora se muestra */
+    display: flex; 
     align-items: center;
     cursor: pointer;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000; 
 }
 
-/* Estilos para el carrito desplegable */
+
 .cart-content {
     position: absolute;
     top: 60px;
@@ -217,11 +215,11 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 15px;
-    display: none; /* Se oculta hasta que se active */
+    display: none; 
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     flex-direction: column;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000; 
 }
 
 .cart-content.visible {
@@ -241,7 +239,7 @@ body {
     color: white;
 }
 
-/* Estilos para el carrito desplegable */
+
 .cart-content {
     position: absolute;
     top: -60px;
@@ -302,12 +300,12 @@ h1 {
 
 
 p {
-    font-family: 'Zen Dots', sans-serif; /* Aplica la misma fuente al párrafo */
+    font-family: 'Zen Dots', sans-serif; 
     font-size: 15px;
     line-height: 1.5;
 }
 
-/* Botón flotante de atención */
+
 .support-button {
     position: fixed;
     bottom: 20px;
@@ -327,7 +325,7 @@ p {
     transform: scale(1.1);
 }
 
-/* Menú de opciones de contacto */
+
 .support-menu {
     position: fixed;
     bottom: 70px;
@@ -372,7 +370,7 @@ p {
     flex-direction: column;
     width: 150px;
     padding: 5px;
-    z-index: 1000; /* Asegura que esté por encima de la barra morada */
+    z-index: 1000; 
 }
 
 
@@ -398,10 +396,10 @@ p {
     color: white;
 }
 
-/* Barra de búsqueda estilo franja */
+
 .search-bar {
     position: absolute;
-    top: 150px; /* Ajustado debajo del logo */
+    top: 150px;
     left: 0;
     width: 100%;
     background: #532d69;
@@ -412,10 +410,10 @@ p {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos del input dentro de la barra de búsqueda */
+
 .search-bar input {
-    width: 60%; /* Ajusta el ancho de la barra de búsqueda */
-    max-width: 500px; /* Máximo tamaño de la barra */
+    width: 60%;
+    max-width: 500px; 
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -423,7 +421,7 @@ p {
     outline: none;
 }
 
-/* Botón de búsqueda */
+
 .search-bar button {
     background: white;
     border: none;
@@ -443,7 +441,7 @@ p {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 300px;  /* Limitar altura y agregar scroll si hay muchos productos */
+    max-height: 300px;  
     overflow-y: auto;
 }
 
@@ -464,7 +462,7 @@ p {
 }
 
 
-/* Mostrar el carrito cuando el mouse pase sobre el icono */
+
 .cart-content.visible .empty-cart-button {
     display: block;
     animation: fadeIn 0.3s ease-in-out;
@@ -499,7 +497,7 @@ p {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-/* 🔹 Estilo del fondo oscuro detrás de la ventana emergente */
+
 .product-modal {
     position: fixed;
     top: 0;
@@ -516,18 +514,18 @@ p {
     z-index: 1000;
 }
 
-/* Estilos para el modal */
+
 .modal {
-    display: none;  /* Ocultamos el modal por defecto */
+    display: none;  
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);  /* Fondo translúcido */
+    background-color: rgba(0, 0, 0, 0.5);  
     justify-content: center;
     align-items: center;
-    z-index: 1000;  /* Asegura que el modal se muestre por encima de otros elementos */
+    z-index: 1000;  
 }
 
 .modal-content {
@@ -582,7 +580,7 @@ p {
 
 }
 
-/* Estilos para los productos */
+
 .product {
     position: relative;
     cursor: pointer;
@@ -610,12 +608,12 @@ p {
 }
 
 .add-to-cart-btn {
-    display: none;  /* Ocultamos el botón al principio */
+    display: none;  
     position: absolute;
-    bottom: 10px;   /* Lo ponemos cerca de la base de la imagen */
+    bottom: 10px;  
     left: 50%;
     transform: translateX(-50%);
-    background-color: #532d69;  /* Un color llamativo */
+    background-color: #532d69;  
     color: #fff;
     font-size: 16px;
     padding: 10px 20px;
@@ -627,17 +625,17 @@ p {
 }
 
 .product:hover .add-to-cart-btn {
-    display: block;  /* Mostramos el botón al pasar el ratón por encima */
-    opacity: 1;  /* Aumentamos la opacidad */
-    transform: translateX(-50%) scale(1.1);  /* Le damos un pequeño zoom */
+    display: block;  
+    opacity: 1;  
+    transform: translateX(-50%) scale(1.1);  
 }
 
 .add-to-cart-btn:active {
-    transform: translateX(-50%) scale(1);  /* Al presionar, eliminamos el zoom */
+    transform: translateX(-50%) scale(1);  
 }
 
 .add-to-cart-btn {
-    /*... otros estilos ...*/
+    
     animation: bounce 0.6s ease-out;
 }
 
@@ -649,7 +647,7 @@ p {
 
 
 
-/* 🔹 Mostrar la ventana emergente cuando se active */
+
 .product-modal.active {
     opacity: 1;
     visibility: visible;
@@ -665,7 +663,7 @@ p {
     }
 }
 #cart-counter {
-    color: #ffffff; /* Cambia este valor al color que desees */
+    color: #ffffff; 
     font-weight: bold;
     margin-left: 5px;
 }
