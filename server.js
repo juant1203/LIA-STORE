@@ -32,7 +32,7 @@ db.connect()
   .then(() => console.log("✅ Conectado a PostgreSQL"))
   .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
 
-app.get("/productos", async (req, res) => {
+app.get("/api/productos", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM productos");
     res.json(result.rows);
