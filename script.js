@@ -320,9 +320,6 @@ function emptyCart() {
     updateCartCounter();
 }
 
-
-  contenedor.innerHTML = ""; 
-
   productos.forEach(producto => {
     const item = document.createElement("div");
     item.classList.add("product"); 
