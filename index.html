@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">    
     <link rel="icon" type="img/pestaña.png" sizes="512x512" href="img/pestaña.png">    
     <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
     <header>            
@@ -82,6 +83,53 @@
         <a href="https://wa.me/3181145277?text=¡Hola!%20Necesito%20ayuda%20con%20mi%20compra." target="_blank" class="support-option">💬 WhatsApp</a>
     </div>
     <div id="productos"></div>
+    <div class="auth-buttons">
+        <a href="#" class="auth-button" id="registerBtn">Registrarse</a>
+        <a href="#" class="auth-button" id="loginBtn">Iniciar sesión</a>
+      </div>
+    
+      <div id="registerModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeRegister">&times;</span>
+          <h2>Registro</h2>
+          <form id="registerForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br>
+    
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" required><br>
+    
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required><br>
+    
+            <button type="submit">Registrarse</button>
+          </form>
+          <div class="auth-with-social">
+            <button class="social-btn" id="googleLoginBtn">
+              <img src="https://img.freepik.com/vector-premium/icono-logotipo-google-establezca-icono-google-busqueda-iconos-vectoriales_981536-453.jpg?semt=ais_hybrid" alt="Google Logo" class="social-logo">
+            </button>
+            <button class="social-btn" id="hotmailLoginBtn">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThF3jBsefqk5FM0y30TbymMSsi2z-CiSN0HQ&s" alt="Hotmail Logo" class="social-logo">
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      <div id="loginModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeLogin">&times;</span>
+          <h2>Iniciar sesión</h2>
+          <form id="loginForm">
+            <label for="emailLogin">Correo electrónico:</label>
+            <input type="email" id="emailLogin" name="email" required><br>
+    
+            <label for="contraseñaLogin">Contraseña:</label>
+            <input type="password" id="contraseñaLogin" name="contraseña" required><br>
+    
+            <button type="submit">Iniciar sesión</button>
+          </form>
+        </div>
+      </div>  
     <script src="script.js"></script>
     </body>
 </html>

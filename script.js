@@ -319,3 +319,71 @@ function emptyCart() {
     updateCartView();
     updateCartCounter();
 }
+
+fetch('http://localhost:10000/productos')  
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(producto => {
+      document.getElementById('productos').innerHTML += `
+        <div class="producto">
+          <h3>${producto.nombre}</h3>
+          <p>${producto.descripcion}</p>
+          <p>Precio: ${producto.precio}</p>
+        </div>
+      `;
+    });
+  });
+
+  const registerBtn = document.getElementById('registerBtn');
+const loginBtn = document.getElementById('loginBtn');
+const registerModal = document.getElementById('registerModal');
+const loginModal = document.getElementById('loginModal');
+const closeRegister = document.getElementById('closeRegister');
+const closeLogin = document.getElementById('closeLogin');
+
+registerBtn.onclick = function() {
+  registerModal.style.display = "block";
+}
+
+loginBtn.onclick = function() {
+  loginModal.style.display = "block";
+}
+
+closeRegister.onclick = function() {
+  registerModal.style.display = "none";
+}
+
+closeLogin.onclick = function() {
+  loginModal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == registerModal) {
+    registerModal.style.display = "none";
+  }
+  if (event.target == loginModal) {
+    loginModal.style.display = "none";
+  }
+}
+
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    var userId = profile.getId(); 
+    var userName = profile.getName();
+    var userEmail = profile.getEmail();
+
+    
+    console.log('ID: ' + userId);
+    console.log('Nombre: ' + userName);
+    console.log('Correo: ' + userEmail);
+
+    
+    sendVerificationCode(userEmail);
+  }
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('Usuario desconectado');
+    });
+  }

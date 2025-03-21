@@ -192,7 +192,7 @@ body {
 
 .cart-container {
     position: fixed; 
-    top: 10px;
+    top: 60px;
     right: 10px;
     background: #532d69;
     padding: 8px 12px;
@@ -242,7 +242,7 @@ body {
 
 .cart-content {
     position: absolute;
-    top: -60px;
+    top: -10px;
     right: 50px;
     width: 240px;
     background: white;
@@ -667,3 +667,113 @@ p {
     font-weight: bold;
     margin-left: 5px;
 }
+
+.auth-buttons {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 15px;
+    z-index: 1001;
+  }
+  
+  .auth-button {
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    background-color: transparent;
+  }
+  
+  .auth-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.6);
+    color: #007bff;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+  }
+  
+  .close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  form input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  form button {
+    width: 90%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+  .auth-with-social {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .social-btn {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .social-logo {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .social-btn:hover {
+    opacity: 0.8;
+  }
