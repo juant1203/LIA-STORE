@@ -5,7 +5,6 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const path = require("path");
 const cors = require("cors");
-const fs = require("fs");
 const { Client } = require("pg");
 const mysql = require("mysql2/promise");
 
@@ -24,37 +23,40 @@ const db = new Client({
 
 db.connect()
   .then(() => console.log("✅ Conectado a PostgreSQL"))
-  .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
+  .catch((err) => console.error("❌ Error conectando a PostgreSQL:", err));
 
 // 🔹 Conectar a MySQL
 const dbMySQL = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_NAME,
+  database: process.env.MYSQL_DATABASE, // Se cambia a MYSQL_DATABASE
   port: process.env.MYSQL_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 });
 
-dbMySQL.getConnection()
-  .then(conn => {
+dbMySQL
+  .getConnection()
+  .then((conn) => {
     console.log("✅ Conectado a MySQL");
     conn.release();
   })
-  .catch(err => console.error("❌ Error conectando a MySQL:", err));
+  .catch((err) => console.error("❌ Error conectando a MySQL:", err));
 
 // 🔹 Middleware
-app.use(cors({
-  origin: ['http://localhost:10000', 'https://lia-store.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:10000", "https://lia-store.onrender.com"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(
   session({
-    secret: "secreto_super_seguro",
+    secret: process.env.SESSION_SECRET || "secreto_super_seguro",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -68,48 +70,49 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 🔹 Cargar credenciales de Google
-const credentials = JSON.parse(fs.readFileSync("credentials.json", "utf8"));
-console.log("📄 Credenciales cargadas correctamente");
+// 🔹 Cargar credenciales de Google desde las variables de entorno
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+console.log("📄 Credenciales de Google cargadas correctamente");
 
 // 🔹 Configurar estrategia de autenticación con Google
-passport.use(new GoogleStrategy(
-  {
-    clientID: credentials.web.client_id,
-    clientSecret: credentials.web.client_secret,
-    callbackURL: credentials.web.redirect_uris[0],
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    const { id, displayName, emails } = profile;
-    const email = emails[0].value;
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: credentials.web.client_id,
+      clientSecret: credentials.web.client_secret,
+      callbackURL: credentials.web.redirect_uris[0],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const { id, displayName, emails } = profile;
+      const email = emails[0].value;
 
-    try {
-      // Guardar en PostgreSQL
-      await db.query(
-        `INSERT INTO users (google_id, name, email) 
-         VALUES ($1, $2, $3) 
-         ON CONFLICT (google_id) DO UPDATE 
-         SET name = $2, email = $3`,
-        [id, displayName, email]
-      );
-      console.log("✅ Usuario guardado en PostgreSQL");
+      try {
+        // Guardar en PostgreSQL
+        await db.query(
+          `INSERT INTO users (google_id, name, email) 
+           VALUES ($1, $2, $3) 
+           ON CONFLICT (google_id) DO UPDATE 
+           SET name = $2, email = $3`,
+          [id, displayName, email]
+        );
+        console.log("✅ Usuario guardado en PostgreSQL");
 
-      // Guardar en MySQL
-      await dbMySQL.query(
-        `INSERT INTO users (google_id, name, email) 
-         VALUES (?, ?, ?) 
-         ON DUPLICATE KEY UPDATE name=?, email=?`,
-        [id, displayName, email, displayName, email]
-      );
-      console.log("✅ Usuario guardado en MySQL");
+        // Guardar en MySQL
+        await dbMySQL.query(
+          `INSERT INTO users (google_id, name, email) 
+           VALUES (?, ?, ?) 
+           ON DUPLICATE KEY UPDATE name=?, email=?`,
+          [id, displayName, email, displayName, email]
+        );
+        console.log("✅ Usuario guardado en MySQL");
+      } catch (error) {
+        console.error("❌ Error guardando el usuario en la base de datos:", error);
+      }
 
-    } catch (error) {
-      console.error("❌ Error guardando el usuario en la base de datos:", error);
+      return done(null, profile);
     }
-
-    return done(null, profile);
-  }
-));
+  )
+);
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -120,19 +123,20 @@ passport.deserializeUser((obj, done) => {
 });
 
 // 🔹 Rutas de autenticación
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    res.redirect('/dashboard');
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/dashboard");
   }
 );
 
-app.get('/logout', (req, res) => {
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/');
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect("/");
   });
 });
 
