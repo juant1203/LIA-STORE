@@ -22,7 +22,7 @@
         </div> 
          <div class="search-bar">            
             <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">           
-            <button onclick="searchProducts()">🔍</button>
+            <button onclick="searchProducts()" aria-label="Buscar">🔍</button>
             <div id="cart-button" class="cart-container" onclick="toggleCart()">
                 <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Carrito de Compras" class="cart-icon">
                 <span class="cart-text">Carrito de Compras</span>
@@ -67,7 +67,7 @@
             <div class="overlay">Belleza</div>
         </article>
         <article class="product hogar" onclick="showProductDetails('img/img4.png', 'Hogar', '$19.99')">
-            <img src="img/img4.jpg" alt="Productos de Belleza">
+            <img src="img/img4.jpg" alt="Productos de Hogar">
             <div class="overlay">Hogar</div>
         </article>
         <article class="product tecnologia" onclick="showProductDetails('img/img5.png', 'Tecnología', '$19.99')">
@@ -105,9 +105,9 @@
             <button type="submit">Registrarse</button>
           </form>
           <div class="auth-with-social">
-            <button class="social-btn" id="googleLoginBtn">
+            <a href="/auth/google" class="social-btn">
               <img src="https://img.freepik.com/vector-premium/icono-logotipo-google-establezca-icono-google-busqueda-iconos-vectoriales_981536-453.jpg?semt=ais_hybrid" alt="Google Logo" class="social-logo">
-            </button>
+            </a>            
             <button class="social-btn" id="hotmailLoginBtn">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThF3jBsefqk5FM0y30TbymMSsi2z-CiSN0HQ&s" alt="Hotmail Logo" class="social-logo">
             </button>

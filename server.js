@@ -1,38 +1,32 @@
 require("dotenv").config();
-
 const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 10000;
+const session = require("express-session");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const path = require("path");
 const cors = require("cors");
-
-app.use(cors({
-  origin: 'https://lia-store.onrender.com',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
-}));
-
-const { Client } = require("pg"); 
+const fs = require("fs");
+const { Client } = require("pg");
 const mysql = require("mysql2/promise");
 
-app.use(express.static(path.join(__dirname)));
+const app = express();
+const PORT = process.env.PORT || 10000;
+const isProduction = process.env.NODE_ENV === "production";
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
+// 🔹 Conectar a PostgreSQL
 const db = new Client({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 5432, 
+  port: process.env.DB_PORT || 5432,
 });
 
 db.connect()
   .then(() => console.log("✅ Conectado a PostgreSQL"))
-  .catch(err => console.error("Error conectando a PostgreSQL:", err));
+  .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
 
+// 🔹 Conectar a MySQL
 const dbMySQL = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -51,6 +45,98 @@ dbMySQL.getConnection()
   })
   .catch(err => console.error("❌ Error conectando a MySQL:", err));
 
+// 🔹 Middleware
+app.use(cors({
+  origin: ['http://localhost:10000', 'https://lia-store.onrender.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
+
+app.use(
+  session({
+    secret: "secreto_super_seguro",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: isProduction,
+      httpOnly: true,
+      sameSite: isProduction ? "None" : "Lax",
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 🔹 Cargar credenciales de Google
+const credentials = JSON.parse(fs.readFileSync("credentials.json", "utf8"));
+console.log("📄 Credenciales cargadas correctamente");
+
+// 🔹 Configurar estrategia de autenticación con Google
+passport.use(new GoogleStrategy(
+  {
+    clientID: credentials.web.client_id,
+    clientSecret: credentials.web.client_secret,
+    callbackURL: credentials.web.redirect_uris[0],
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    const { id, displayName, emails } = profile;
+    const email = emails[0].value;
+
+    try {
+      // Guardar en PostgreSQL
+      await db.query(
+        `INSERT INTO users (google_id, name, email) 
+         VALUES ($1, $2, $3) 
+         ON CONFLICT (google_id) DO UPDATE 
+         SET name = $2, email = $3`,
+        [id, displayName, email]
+      );
+      console.log("✅ Usuario guardado en PostgreSQL");
+
+      // Guardar en MySQL
+      await dbMySQL.query(
+        `INSERT INTO users (google_id, name, email) 
+         VALUES (?, ?, ?) 
+         ON DUPLICATE KEY UPDATE name=?, email=?`,
+        [id, displayName, email, displayName, email]
+      );
+      console.log("✅ Usuario guardado en MySQL");
+
+    } catch (error) {
+      console.error("❌ Error guardando el usuario en la base de datos:", error);
+    }
+
+    return done(null, profile);
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+// 🔹 Rutas de autenticación
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/dashboard');
+  }
+);
+
+app.get('/logout', (req, res) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
+
+// 🔹 Rutas de productos
 app.get("/api/productos/postgres", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM productos");
@@ -71,8 +157,13 @@ app.get("/api/productos/mysql", async (req, res) => {
   }
 });
 
+// 🔹 Servir archivos estáticos
+app.use(express.static(path.join(__dirname)));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// 🔹 Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
-
-
