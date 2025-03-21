@@ -31,13 +31,13 @@ const db = new Client({
 
 db.connect()
   .then(() => console.log("✅ Conectado a PostgreSQL"))
-  .catch(err => console.error("Error conectando a PostgreSQL:", err));
+  .catch(err => console.error("❌ Error conectando a PostgreSQL:", err));
 
 const dbMySQL = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_NAME,
+  host: process.env.MYSQL_HOST || process.env.DB_HOST,
+  user: process.env.MYSQL_USER || process.env.DB_USER,
+  password: process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD,
+  database: process.env.MYSQL_NAME || process.env.DB_NAME,
   port: process.env.MYSQL_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
@@ -74,5 +74,3 @@ app.get("/api/productos/mysql", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
-
-
