@@ -1,4 +1,4 @@
-//server.js con node
+//server.js con node.js
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
