@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">    
     <link rel="icon" type="img/pestaña.png" sizes="512x512" href="img/pestaña.png">    
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
@@ -97,10 +98,10 @@
             <input type="text" id="nombre" name="nombre" required><br>
     
             <label for="email">Correo electrónico:</label>
-            <input type="email" id="email" name="email" required><br>
+            <input type="email" id="email" name="email" required autocomplete="username"><br>
     
             <label for="contraseña">Contraseña:</label>
-            <input type="password" id="contraseña" name="contraseña" required><br>
+            <input type="password" id="contraseña" name="contraseña" required autocomplete="current-password"><br>
     
             <button type="submit">Registrarse</button>
           </form>
@@ -121,15 +122,26 @@
           <h2>Iniciar sesión</h2>
           <form id="loginForm">
             <label for="emailLogin">Correo electrónico:</label>
-            <input type="email" id="emailLogin" name="email" required><br>
+            <input type="email" id="emailLogin" name="email" required autocomplete="username"><br>
     
             <label for="contraseñaLogin">Contraseña:</label>
-            <input type="password" id="contraseñaLogin" name="contraseña" required><br>
+            <input type="password" id="contraseñaLogin" name="contraseña" required autocomplete="current-password"><br>
     
             <button type="submit">Iniciar sesión</button>
           </form>
         </div>
-      </div>  
+      </div>
+      <div>
+        <img id="fotoUsuario" src="" alt="Foto de usuario" width="50">
+        <p>Nombre: <span id="nombreUsuario"></span></p>
+        <p>Correo: <span id="correoUsuario"></span></p>
+        <button onclick="cerrarSesion()">Cerrar sesión</button>
+      </div> 
+      <div id="cookie-banner" style="position: fixed; bottom: 0; width: 100%; background-color: #333; color: white; padding: 10px; text-align: center; display: none;">
+        <p>Este sitio usa cookies para mejorar la experiencia de usuario. <a href="/politica-de-cookies" style="color: #ffcc00;">Más información</a>.</p>
+        <button id="accept-cookies" style="background-color: #ffcc00; color: black; border: none; padding: 5px 10px; cursor: pointer;">Aceptar</button>
+      </div>
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
     </body>
 </html>

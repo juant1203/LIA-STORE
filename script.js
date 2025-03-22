@@ -320,19 +320,33 @@ function emptyCart() {
     updateCartCounter();
 }
 
-fetch('http://localhost:10000/productos')  
-  .then(response => response.json())
+fetch('http://localhost:10000/productos')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error en la solicitud: ' + response.status);
+    }
+    return response.json();
+  })
   .then(data => {
-    data.forEach(producto => {
-      document.getElementById('productos').innerHTML += `
-        <div class="producto">
-          <h3>${producto.nombre}</h3>
-          <p>${producto.descripcion}</p>
-          <p>Precio: ${producto.precio}</p>
-        </div>
-      `;
-    });
+    // Asegúrate de que 'data' sea un array antes de intentar iterarlo
+    if (Array.isArray(data)) {
+      data.forEach(producto => {
+        document.getElementById('productos').innerHTML += `
+          <div class="producto">
+            <h3>${producto.nombre}</h3>
+            <p>${producto.descripcion}</p>
+            <p>Precio: ${producto.precio}</p>
+          </div>
+        `;
+      });
+    } else {
+      console.error('Los datos no son un array válido');
+    }
+  })
+  .catch(error => {
+    console.error('Hubo un error:', error);
   });
+
 
   const registerBtn = document.getElementById('registerBtn');
 const loginBtn = document.getElementById('loginBtn');
@@ -387,3 +401,90 @@ function onSignIn(googleUser) {
       console.log('Usuario desconectado');
     });
   }
+
+  async function obtenerUsuario() {
+    try {
+      const response = await fetch("http://localhost:10000/api/user", {
+        credentials: "include", 
+      });
+      const user = await response.json();
+  
+      if (user.error) {
+        console.log("Usuario no autenticado");
+        return;
+      }
+  
+      document.getElementById("nombreUsuario").textContent = user.name;
+      document.getElementById("correoUsuario").textContent = user.email;
+      document.getElementById("fotoUsuario").src = user.photo;
+    } catch (error) {
+      console.error("Error obteniendo el usuario:", error);
+    }
+  }
+  
+  // Llamamos a la función cuando la página cargue
+  window.onload = obtenerUsuario;
+
+  function cerrarSesion() {
+    window.location.href = "http://localhost:10000/logout";
+  }  
+
+  document.getElementById("registerForm").addEventListener("submit", async (event) => {
+    event.preventDefault(); // Evita que la página se recargue
+
+    const nombre = document.getElementById("nombre").value;
+    const email = document.getElementById("email").value;
+    const contraseña = document.getElementById("contraseña").value;
+
+    try {
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nombre, email, contraseña }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert("✅ Registro exitoso");
+        } else {
+            alert("❌ Error: " + data.message);
+        }
+    } catch (error) {
+        console.error("❌ Error al enviar el formulario:", error);
+        alert("❌ Error en la conexión con el servidor");
+    }
+});
+
+// Mostrar el banner si el usuario no ha aceptado las cookies
+if (!localStorage.getItem("cookiesAccepted")) {
+    document.getElementById("cookie-banner").style.display = "block";
+  }
+  
+  // Manejar la aceptación de cookies
+  document.getElementById("accept-cookies").addEventListener("click", () => {
+    localStorage.setItem("cookiesAccepted", "true");  // Guardar en el almacenamiento local que las cookies han sido aceptadas
+    document.getElementById("cookie-banner").style.display = "none";  // Ocultar el banner
+  });
+  
+  window.addEventListener("load", function() {
+    window.cookieconsent.initialise({
+      palette: {
+        popup: { background: "#333" },
+        button: { background: "#ffcc00" }
+      },
+      theme: "classic",
+      position: "bottom",
+      content: {
+        message: "Este sitio usa cookies para mejorar la experiencia de usuario.",
+        dismiss: "Aceptar",
+        link: "Más información",
+        href: "/politica-de-cookies"
+      },
+      onStatusChange: function(status) {
+        // Aquí puedes manejar qué hacer cuando el usuario acepta o rechaza las cookies
+      }
+    });
+  });
+  
